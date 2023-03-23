@@ -7,8 +7,23 @@ import '../css/style.css'
 import DeptRow from '../dept/DeptRow'
 import BlogHeader from '../include/BlogHeader'
 import { MyInput, MyLabel,MyLabelAb } from '../styles/FormStyle'
+import styled from 'styled-components'
+const DivUploadImg=styled.div`
+  display:fldx;
+  width:200px;
+  height:250px;
+  overflow:hidden;
+  margin:10px auto;
+`;
+const Img = styled.img`
+  widht:100%;
+  height:100%;
+  object-fit:cover;
+
+`;
 
 const DeptPage = ({imageUploader}) => {
+
     
     const navigate = useNavigate()//화면 전환시 가급적 전체페이지 리로딩을 하지않아야 필요한것만 하자
     //Nvigate 훅을 사용하면 해결
@@ -159,6 +174,8 @@ const DeptPage = ({imageUploader}) => {
       <BlogHeader/>
       <div className='container'>
         <div className="page-header">
+        <h2>부서관리&nbsp;<i className='fa-solid fa-angles-right'></i>&nbsp;<small>부서목록</small></h2>
+
         <hr />
 	    </div>      
       <div className="row">
@@ -236,9 +253,10 @@ const DeptPage = ({imageUploader}) => {
             <Form.Label>사진</Form.Label>
               <input className="form-control" type="file" accept='image/*' id="dimg" name="dimg" onChange={imgChange}/>
           </Form.Group>
-          <div id="uploadImg">
-            <img className='thumbNail' src="http://via.placeholder.com/200X250" alt="미리보기" />
-          </div>
+          <DivUploadImg id="uploadImg">
+            <Img src="http://via.placeholder.com/200X250" alt="미리보기" />
+            
+          </DivUploadImg>
         </div>
 
         </Modal.Body>

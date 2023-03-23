@@ -6,7 +6,7 @@ import Profile from './components/kakao/Profile'
 import HomePage from './components/page/HomePage'
 import KakaoRedirectHandler from './components/kakao/KakaoRedirectHandler';
 import DeptPage from './components/page/DeptPage';
-
+import DeptDetail from './components/dept/DeptDetail';
 function App({imageUploader}) {
   return (
     <>
@@ -14,6 +14,7 @@ function App({imageUploader}) {
       <Route path = "/" exact={true} element={<LoginPage/>}/>
       <Route path = "/home" exact={true} element={<HomePage/>}/>
       <Route path = "/dept/:gubun" element={<DeptPage imageUploader={imageUploader}/>}/>
+      <Route path = "/deptdetail/:deptno" element={<DeptDetail imageUploader={imageUploader}/>}/>
       <Route path = "/auth/kakao/callback" exact={true} element={<KakaoRedirectHandler/>}/>
       <Route path='/member' exact={true} element={<MemberPage imageUploader={imageUploader}/>}/>
       <Route path='/profile' exact={true} element={<Profile/>}/>
