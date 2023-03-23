@@ -7,12 +7,14 @@ import HomePage from './components/page/HomePage'
 import KakaoRedirectHandler from './components/kakao/KakaoRedirectHandler';
 import DeptPage from './components/page/DeptPage';
 import DeptDetail from './components/dept/DeptDetail';
+import RepleBoardPage from './components/page/RepleBoardPage';
 function App({imageUploader}) {
   return (
     <>
      <Routes>
       <Route path = "/" exact={true} element={<LoginPage/>}/>
       <Route path = "/home" exact={true} element={<HomePage/>}/>
+      <Route path = "/repleboard" exact={true} element={<RepleBoardPage/>}/>
       <Route path = "/dept/:gubun" element={<DeptPage imageUploader={imageUploader}/>}/>
       {/* 컴포넌트 함수 호출 =마운트 컴포넌트함수가 가진 return 호출  */}
       <Route path = "/deptdetail/:deptno" element={<DeptDetail imageUploader={imageUploader}/>}/>
