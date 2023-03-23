@@ -1,49 +1,24 @@
-const createStore=()=>{
-    let state; 
-    let handlers=[];
-    //상태 바꾸기 
-    const send=(action)=>{
-        //새로운 객체가 만들어진다
-        console.log("send호출")
-        state = dispatcher(state,action)
-        handlers.forEach(handler=>handler())
-    }
-    const subscribe=( ()=>{
-        console.log(store.getState())
-        handlers.push(handlers)
-    }) 
-    const getState= ()=>{
-        return state
-    }
-    return {
-        send,
-        getState,
-        subscribe
-    }
-}
+import { decrease, increase } from "./actions.js";
+import {reducer} from "./reducer.js";
+import {createStore} from "./redux.js"
 
-const dispatcher=(state={count:0},action)=>{
-    
-switch(action.type){
-  
-    case'increase':
-        return{...state,count:state.count+1}
-    case'decrease':
-        return{...state,count:state.count-1}
-    dafault:
-        return {...state};
-}
-return {...state,count:state.count+1}
-}
+//사용 - 함수호출=store생성하기  index.js에서 store생성(리액트에서는)
+//Q. 왜 index.js?  
+//A. 모든 전역상태를 관리하고싶어 initializeState
+//app.js에있는 코드가 리액트 컴포넌트에 사용해야하는 코드
+//문제제기 app.js 하나에 모두 있을 때는 파라미터에 reducer(구:worker)파라미터로 넘겨야 한다
 
-const store = createStore(dispatcher)
-store.subscribe(function (){
-    console.log(store.getState())
+const store = createStore(reducer);/*index.js에서 생성 createStore함수받기 */
+store.subscribe(function(){//pub and subscribe 모델 함수호출
+    console.log(store.getState());//변경된 상태값 확인하기 리액트 - 컴포넌트가 마운트 될 때
 })
-    store.send({type:'increase'})
-    store.send({type:'increase'})
-    store.send({type:'decrease'})
-    console.log(store.getState())
+//getState = Selector(state=>state.userAuth)
+
+//store.dispatcher(actionCreator(INCREASE,1))//시그널 보내기 send의 파라미터 => action
+store.dispatch(increase());//시그널 주기 action 리액트 -useDispatch dispatch(type,payload)
+store.dispatch(increase());
+store.dispatch(decrease());
+console.log(store.getState())
 
 /* 
 자바스크립트에서 함수는 객체

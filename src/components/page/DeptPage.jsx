@@ -243,7 +243,7 @@ const DeptPage = ({imageUploader}) => {
           </MyLabel>
           </div>
           <div style={{display:"flex"}}>
-          <MyLabel>부서명<span style={{color:'red'}}>{star.deptno}</span>
+          <MyLabel>지역<span style={{color:'red'}}>{star.deptno}</span>
             <MyInput type="text" name="loc" placeholder="Enter 지역"  onChange={(e)=>{handleLoc(e.target.value)}}/>
             <MyLabelAb>{comment.loc}</MyLabelAb>
             </MyLabel>

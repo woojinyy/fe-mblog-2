@@ -9,7 +9,7 @@
 const createStore=()=>{//배치위치 index.js에 배치 = store를 생성하겠다
     let state; /* 변하니까 상태다 */
     //함수를 담아두는 배열 선언
-    let handlers=[]
+    let handlers=[];
     //상태 바꾸기 useSelector훅을 통해서 action 전달
     const send=(action)=>{
         //새로운 객체가 만들어진다
@@ -17,12 +17,12 @@ const createStore=()=>{//배치위치 index.js에 배치 = store를 생성하겠
         state = dispatcher(state,action)
         //나에게 구독신청한 사람들에게 알림
         handlers.forEach((handler)=>handler());//전달받은 함수 호출해줘
-    }
-    const subscribe=( (handler)=>{//useDispatcher 훅
+    };
+    const subscribe= (handler)=>{//useDispatcher 훅
         //콜백함수
         console.log(store.getState())
-        handlers.push(handler)
-    })
+        handlers.push(handler);
+    }
     
     const getState= ()=>{
         return state;
@@ -32,11 +32,11 @@ const createStore=()=>{//배치위치 index.js에 배치 = store를 생성하겠
     return {
         send,//함수 == 객체 파라미터로 들어온 상태를 받아서 가공 후 새로운 객체로 내보냄
         getState,//함수 ==상태정보를 담은 state를 반환해준다
-        subscribe
-    }
-}
+        subscribe,
+    };
+};//end of store
 
-const dispatcher=(state={count:0},action)=>{//state가 undefined되는 것 방지위해 객체 선언
+const worker=(state={count:0},action)=>{//state가 undefined되는 것 방지위해 객체 선언
     //Q1.무엇을 해야 하나요?  
     //A1.참조무결성이 깨지는 걸 방지하기위해 dispathcer
     //입력으로 상태 줄테니까 이 객체 복사해서 (깊은)새로운객체로 변화해서 처리해라
@@ -55,7 +55,7 @@ switch(action.type){
         return{...state,count:state.count+1}
     case'decrease':
         return{...state,count:state.count-1}
-    dafault:
+    default:
         return {...state}
 }
 return {...state,count:state.count+1}//깊은복사=새로운객체를 만들어서 내용을복사함

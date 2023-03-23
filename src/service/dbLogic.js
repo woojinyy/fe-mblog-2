@@ -1,5 +1,22 @@
 import axios from "axios";
 
+export const deptDeleteDB = (dept) => {
+  console.log("deptDeleteDB호출")
+return new Promise((reslove, reject) => {
+  try {
+    const response = axios({
+      method: "get",
+      url: process.env.REACT_APP_SPRING_IP + "dept/deptDelete",
+      params: dept, //post방식 전송시 반드시 data속성으로 파라미터 넣을것
+    });
+    reslove(response);
+    console.log(response)
+  } catch (error) {
+    reject(error);
+  }
+});
+};
+
 export const deptInsertDB = (dept) => {
   console.log("deptInsertDB호출")
 return new Promise((reslove, reject) => {
@@ -13,6 +30,22 @@ return new Promise((reslove, reject) => {
     reslove(response);
   } catch (error) {
     reject(error);
+  }
+});
+};
+export const deptUpdateDB = (dept) => {
+  console.log("deptUpdateDB호출")
+return new Promise((reslove, reject) => {
+  try {
+    const response = axios({
+      method: "post",//@RequestBody
+      url: process.env.REACT_APP_SPRING_IP + "dept/deptUpdate",
+      data: dept, //post방식 전송시 반드시 data속성으로 파라미터 넣을것
+    });
+    console.log(""+response)//요청처리 성공
+    reslove(response);
+  } catch (error) {
+    reject(error);//요청처리 실패
   }
 });
 };

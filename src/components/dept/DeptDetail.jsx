@@ -3,7 +3,7 @@ import { Button, Form, Modal,  Card } from 'react-bootstrap'
 import BlogHeader from '../include/BlogHeader'
 import BlogFooter from '../include/BlogFooter'
 import styled from 'styled-components'
-import {  deptListDB } from '../../service/dbLogic'
+import {  deptListDB, deptUpdateDB,deptDeleteDB } from '../../service/dbLogic'
 import { useNavigate, useParams } from 'react-router'
 import { MyInput, MyLabel,MyLabelAb } from '../styles/FormStyle'
 import { validateDName } from '../../service/validateLogic'
@@ -24,10 +24,9 @@ const Img = styled.img`
     widht:100%;
     height:100%;
     object-fit:cover;
-
 `;
 
-const DeptDetail = ({ImageUploader}) => {
+const DeptDetail = ({imageUploader}) => {
     const validate = (key,e)=>{
         console.log('validate:'+key)
         let result;
@@ -43,8 +42,7 @@ const DeptDetail = ({ImageUploader}) => {
           }
         }
       }
-    const gubun = useParams()//Route path = "/boarddetail/:bm_no"
-    //디폴트는 없고 부서등록이 성공하면 1을 돌려준다
+      
     const handleClose=()=>setShow(false)
     const [dname,setDname]=useState("")
     const [loc,setLoc]=useState("")
@@ -63,7 +61,7 @@ const DeptDetail = ({ImageUploader}) => {
     })
     //사용자가 선택한 해시값으로 전달된 부서번호 가져오기
     //사용자가 부서번호를 선택할 때마다 변경된다useEffect에서 의존배열인자로 사용한다
-    const {deptno}=useParams()
+    const {deptno}=useParams()//App.jsx의 Route path해시값으로 넘어온다 = 값이 바뀐다
     //오라클서버에서 파라미터로 넘어오는 부서번호를 가지고 한건을 조회한 후 담기
     const [dept,setDept]=useState({
         DEPTNO:0,
@@ -89,9 +87,8 @@ const DeptDetail = ({ImageUploader}) => {
     //수정화면 Modal Mount여부 결정 false 안보임 true보임
     const [show,setShow]=useState(false)
     const handleShow = ()=>setShow(true)
-    const deptDelete = ()=>{
-    }//end of deptDelete
-    //의존배열
+  
+    //파라미터로 넘어오는 deptno가 바뀌면 리렌더링 된다
     useEffect(()=>{
         const asyncDB= async()=>{
             const res = await deptListDB({deptno:deptno})
@@ -108,9 +105,13 @@ const DeptDetail = ({ImageUploader}) => {
             });
         }
         asyncDB()
-        
+        return()=>{
+            //언마운트 될 때 처리할 일이 있으면 여기에 코딩
+        }
         //읽어서 useState에 담아주기
     },[deptno])//deptno가 바뀔 때마다 함수 실행(=렌더링)해야하기 때문에 파라미터로 deptno가져와
+   
+    //이미지가 null이면 터질 수 있기 때문에
     if(!dept.FILEURL){
         dept.FILEURL="http://via.placeholder.com/200X250"
     }
@@ -118,7 +119,68 @@ const DeptDetail = ({ImageUploader}) => {
     const deptList=()=>{
         navigate('/dept/0')
     }
-
+    const imgChange=async(event)=>{
+        //비동기처리
+         console.log(event.target.files[0])
+         const uploaded = await imageUploader.upload(event.target.files[0])
+         console.log(uploaded)
+         //정보 호출
+         setFiles({
+         filename : uploaded.public_id+","+uploaded.format,
+         fileurl : uploaded.url,
+         })
+       //input의 이미지 객체 얻어오기
+         const upload =document.querySelector("#dimg")
+         //이미지를 집어 넣을 곳의 부모태그
+         const holder = document.querySelector("#uploadImg")
+         const file = upload.files[0]
+         const reader = new FileReader()
+         reader.onload=(event)=>{
+         const img = new Image()
+         img.src = event.target.result
+         if(img.width>150){
+         img.width=150
+         }
+         holder.innerHTML="";
+         holder.appendChild(img)
+         }
+         reader.readAsDataURL(file)
+         return false
+       }//end of imgChange
+       //부서 등록 구현//저장버튼 눌렀을 때 update event처리
+   //spring boot 와 리액트 연동하기 @RequestBody사용 JSON 포맷으로 넘기기
+    const deptUpdate=async()=>{
+        const dept = {
+          deptno:deptno,
+          dname:dname,
+          loc:loc,
+          filename:files.filename,
+          fileurl:files.fileurl
+        }
+        const res = await deptUpdateDB(dept)
+        console.log(res+","+res.data)
+        if(!res.data){//성공
+          console.log("부서정보 수정 실패")
+        }
+        else{//false
+            console.log("부서정보 수정 성공")
+            handleClose()//모달창 닫기
+            navigate("/dept/1")
+        //성공시 부서목록 새로고침 처리할 것 window.location.reload()쓰지말것 SPA(single page application )
+        //useEffect 사용 의존성 배열을 연습할 수 있으니까 좋다!
+        //부서목록 새로고침 처리
+      }
+    }
+    //부서 삭제
+    const deptDelete=()=>{
+        console.log('삭제')
+        const asyncDB=async()=>{
+            const res= deptDeleteDB({deptno:deptno})
+            console.log(res.data)
+            navigate("/dept/0")
+        }
+        asyncDB()
+    }//end of deptDelete
     return (
     <>
     <BlogHeader/>
@@ -166,7 +228,7 @@ const DeptDetail = ({ImageUploader}) => {
                 </MyLabel>
             </div>
             <div style={{display:"flex"}}>
-                <MyLabel>부서명<span style={{color:'red'}}>{star.deptno}</span>
+                <MyLabel>지역<span style={{color:'red'}}>{star.deptno}</span>
                 <MyInput type="text" name="loc" placeholder="Enter 지역"  onChange={(e)=>{handleLoc(e.target.value)}}/>
                 <MyLabelAb>{comment.loc}</MyLabelAb>
                 </MyLabel>
@@ -185,7 +247,7 @@ const DeptDetail = ({ImageUploader}) => {
           <Button variant="secondary" onClick={handleClose}>
             닫기
           </Button>
-          <Button variant="primary" onClick={deptInsert}>{/* 함수는 소문자 컴포넌트는 대문자 */}
+          <Button variant="primary" onClick={deptUpdate}>{/* 함수는 소문자 컴포넌트는 대문자 */}
             저장
           </Button>
         </Modal.Footer>
