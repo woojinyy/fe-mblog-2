@@ -1,4 +1,4 @@
-import { decrease, increase } from "./actions.js";
+import { decrease, increase, setToastFalse, setToastMsg } from "./actions.js";
 import {reducer} from "./reducer.js";
 import {createStore} from "./redux.js"
 
@@ -11,16 +11,18 @@ import {createStore} from "./redux.js"
 const store = createStore(reducer);/*index.js에서 생성 createStore함수받기 */
 store.subscribe(function(){//pub and subscribe 모델 함수호출
     console.log(store.getState());//변경된 상태값 확인하기 리액트 - 컴포넌트가 마운트 될 때
-})
+    const state=store.getState()
+    document.querySelector("#count").append(state.count)
+    document.querySelector("#msg").append(state.msg)
+});
 //getState = Selector(state=>state.userAuth)
 
 //store.dispatcher(actionCreator(INCREASE,1))//시그널 보내기 send의 파라미터 => action
-//해당 컴포넌트에서 satae값을 가저오기 useSelector 전달은 dispatch
 store.dispatch(increase());//시그널 주기 action 리액트 -useDispatch dispatch(type,payload)
 store.dispatch(increase());
 store.dispatch(decrease());
-console.log(store.getState())
-
+store.dispatch(setToastMsg("관리자에게 문의하세요"));
+store.dispatch(setToastFalse());
 /* 
 자바스크립트에서 함수는 객체
 소문자로 선언하면 함수

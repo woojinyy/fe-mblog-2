@@ -9,12 +9,25 @@ import DeptPage from './components/page/DeptPage';
 import DeptDetail from './components/dept/DeptDetail';
 import RepleBoardPage from './components/page/RepleBoardPage';
 import Signup from './components/member/Signup';
+import Toast from './components/Toast'
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { setToastMsg } from './redux/toastStatus/action';
 function App({imageUploader}) {
+  const dispatch = useDispatch()
+  const toastStatus = useSelector(state=>state.toastStatus)
+  useEffect(()=>{
+    //시그널보내
+    dispatch(setToastMsg('회원가입 하세요'))
+  },[])
   return (
     <>
+    <div style={{height:'100vh'}}>
+      {toastStatus.status&&<Toast/>}
+    
      <Routes>
-      <Route path = "/" exact={true} element={<LoginPage/>}/>
-      <Route path = "/home" exact={true} element={<HomePage/>}/>
+      <Route path = "/login" exact={true} element={<LoginPage/>}/>
+      <Route path = "/" exact={true} element={<HomePage/>}/>
       <Route path = "/member/signup" exact={true} element={<Signup/>}/>
       <Route path = "/repleboard" exact={true} element={<RepleBoardPage/>}/>
       <Route path = "/dept/:gubun" element={<DeptPage imageUploader={imageUploader}/>}/>
@@ -24,6 +37,8 @@ function App({imageUploader}) {
       <Route path='/member' exact={true} element={<MemberPage imageUploader={imageUploader}/>}/>
       <Route path='/profile' exact={true} element={<Profile/>}/>
     </Routes>
+      
+    </div>
     </>
   );
 }
