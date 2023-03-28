@@ -1,7 +1,9 @@
+/* global daum */
 import  { useCallback, useState } from 'react'
 import { ContainerDiv,HeaderDiv,FormDiv, BButton } from '../styles/FormStyle' 
 import {memberInsertDB} from '../../service/dbLogic'
 import { useNavigate } from 'react-router'
+import { Button } from 'react-bootstrap'
 
 //회원가입페이지
 const Singup = () => {//컴포넌트함수
@@ -16,6 +18,13 @@ const Singup = () => {//컴포넌트함수
   const [mem_tel,setMemtel]=useState("")
   const [mem_gender,setMemgender]=useState("")
   const [mem_birthday,setMembirthday]=useState("")
+  const [mem_zipcode,setMemZipcode]=useState("")
+  const [mem_addr,setMemaddr]=useState("")
+  const [post,setPost]=useState({
+    zipcode:"",
+    addr:"",
+    addrDetail:"",
+  })
   
   //Post @RequestBody{}-> Map or VO 비동기처리 Promise(resolve(성공),reject(실패))
   //async - awiat
@@ -29,7 +38,9 @@ const Singup = () => {//컴포넌트함수
       mem_email:mem_email,
       mem_tel:mem_tel,
       mem_gender:mem_gender,
-      mem_birthday,mem_birthday
+      mem_birthday:mem_birthday,
+      mem_zipcode:mem_zipcode,
+      mem_addr:mem_addr,
     }
     
     const res = await memberInsertDB(member)//비동기는 await쓴다
@@ -66,7 +77,37 @@ const Singup = () => {//컴포넌트함수
   const handleBirthday=useCallback((e)=>{
     setMembirthday(e)
    },[])
+   const handleZipcode=useCallback((e)=>{
+    setMemZipcode(e)
+   },[])
+   const handleAddr=useCallback((e)=>{
+    setMemaddr(e)
+   },[])
+   const handleAddrDtl=useCallback((e)=>{
+    setPost(e)
+   },[])
 
+   const searchAddr=(event)=>{
+    event.preventDefault()//이벤트버블링방지
+  
+    new daum.Postcode({
+        oncomplete: function(data) {
+          let addr=""
+          if (data.userSelectedType==='R'){
+            addr=data.roadAddress;//도로명
+          }
+           else{
+            addr=data.jibunAddress;//지번
+           }
+           console.log(data)//전체주소 한글+영어
+           console.log(addr)//주소정보만
+           setPost({...post,zipcode: data.zonecode,addr:addr})//깊은복사 기존의 참조관계를 끊는다
+           document.querySelector("#mem_zipcode").value=data.zonecode//화면에 자동 입력처리
+           document.querySelector("#mem_addr").value=addr//선택한 주소정보를 input컴포넌트에 자동입력 처리
+           document.querySelector("#mem_addr_dtl").focus()//addr입력되었을 때 커서 넘기기
+        }
+    }).open();
+   }
   return (
     <>
     <ContainerDiv>
@@ -128,7 +169,27 @@ const Singup = () => {//컴포넌트함수
             </div>      
             <input id="mem_birthday" type="text" maxLength="50" placeholder="생년월일을 입력하십시오."
               style={{width:"200px",height:'40px' , border:'1px solid lightGray', marginBottom:'5px'}} onChange={(e)=>{handleBirthday(e.target.value)}} />
-            
+
+            <div style={{display: 'flex', justifyContent: 'space-between', marginBottom:'5px'}}>
+              <h4>우편번호</h4> 
+            </div>      
+            <input id="mem_zipcode" type="text" maxLength="50" placeholder="우편번호 입력"
+              style={{width:"200px",height:'40px' , border:'1px solid lightGray', marginBottom:'5px'}} onChange={(e)=>{handleZipcode(e.target.value)}} />
+           
+           <div style={{display: 'flex', justifyContent: 'space-between', marginBottom:'5px'}}>
+              <h4>주소검색</h4> 
+            </div>      
+            <input id="mem_addr" type="text" maxLength="50" placeholder="주소를 입력하십시오"
+              style={{width:"350px",height:'40px' , border:'1px solid lightGray', marginBottom:'5px'}} onChange={(e)=>{handleAddr(e.target.value)}} />
+           
+            <Button onClick={searchAddr}>주소검색</Button>
+
+            <div style={{display: 'flex', justifyContent: 'space-between', marginBottom:'5px'}}>
+              <h4>상세주소</h4> 
+            </div>      
+            <input id="mem_addr_dtl" type="text" maxLength="50" placeholder="상세주소를 입력하십시오" readOnly={postMessage.addr?false:true}
+              style={{width:"350px",height:'40px' , border:'1px solid lightGray', marginBottom:'5px'}} onChange={(e)=>{handleAddrDtl(e.target.value)}} />
+
             <hr style={{margin:'10px 0px 10px 0px'}}/>
             <BButton onClick={memberInsert}>회원가입</BButton>
           </div>

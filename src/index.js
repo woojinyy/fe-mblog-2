@@ -7,7 +7,7 @@ import { legacy_createStore } from 'redux';
 import App from './App';
 import './components/css/style.css';
 import rootReducer from './redux/rootReducer';
-
+import '@fortawesome/fontawesome-free/js/all.js'
 //이미지업로더 객체 생성
 import ImageUploader from "./service/imageUploader";
 import firebaseApp from './service/firebase';
@@ -30,7 +30,7 @@ root.render(
   <>
    <Provider store ={store}>
     <BrowserRouter>
-    <App imageUploader={imageUploader} />
+    <App authLogic= {authLogic} imageUploader={imageUploader} />
     </BrowserRouter>
    </Provider>
   </>
