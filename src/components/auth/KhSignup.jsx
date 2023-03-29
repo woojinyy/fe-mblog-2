@@ -63,7 +63,7 @@ const KhSignup = ({authLogic}) => {
     name: "",
     birthday: "",
     hp: "",
-    nickname: ""
+    nickname: "",
   });
 
   const [star,setStar] = useState({
@@ -124,7 +124,7 @@ const KhSignup = ({authLogic}) => {
           password2: "",
           name: "",
           hp: "",
-          nickname: "",
+          nickname: "",//Q.정체가 뭐냐 넌? A. stateHook 
           birthday: "",
           gender:"없음"
         });
@@ -179,7 +179,12 @@ const KhSignup = ({authLogic}) => {
     어케 꺼냄?*/
     const data=JSON.stringify(response.data)
     const jsonDoc=JSON.parse(data)
-    console.log(jsonDoc[0].MEM_NAME)
+    if(jsonDoc){
+      console.log(jsonDoc[0].MEM_NAME)
+    }else{
+      console.log("입력한 별명은 사용가능합니다.")
+    }
+   
     //닉네임이 존재할 때
     if(response.data){
     

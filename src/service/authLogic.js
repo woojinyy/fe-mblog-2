@@ -1,4 +1,4 @@
-import {GoogleAuthProvider,getAuth,signInWithPopup,createUserWithEmailAndPassword, EmailAuthProvider, sendEmailVerification} from 'firebase/auth';
+import {GoogleAuthProvider,getAuth,signInWithPopup,createUserWithEmailAndPassword, EmailAuthProvider, sendEmailVerification,signInWithEmailAndPassword } from 'firebase/auth';
 class AuthLogic{
     constructor(){
         this.auth=getAuth();//외부에서 쓰기 위해 
@@ -43,6 +43,28 @@ export const logout=(auth)=>{
         }
         ).catch(e=> reject(e));
     })
+  }
+  export const loginEmail=(auth,user)=>{
+    console.log(auth)
+    console.log(user.email+user.password)
+    return new Promise((resolve,reject)=>{
+      signInWithEmailAndPassword(auth, user.email, user.password)
+  .then((userCredential) => {
+    // Signed in
+    const user = userCredential.user;
+    console.log(userCredential)
+    //성공하면 resolve
+    resolve(userCredential)//응답
+
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode+","+errorMessage)
+    reject(error)//error객체 넘겨주기
+  });
+    })
+
   }
   export const signupEmail = (auth, user) => {
     return new Promise((resolve, reject) => {
