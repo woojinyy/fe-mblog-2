@@ -272,16 +272,17 @@ const KhSignup = ({authLogic}) => {
       const datas = {
         MEM_UID: uid,
         MEM_NAME: memInfo.name,
-        MEM_PW: memInfo.password,
         MEM_EMAIL: memInfo.email,
-        MEM_BIRTHDAY: birthday,
-        MEM_TEL: memInfo.hp,
+        MEM_GENDER: memInfo.gender,
+        MEM_BIRTHDAY: memInfo.birthday,
         MEM_NICKNAME: memInfo.nickname,
-        MEM_ZIPCODE: post.postNum,
-        MEM_ADDR: post.post,
-        MEM_ADDR_DTL: post.postDetail,
-        MEM_AUTH: (type==='member'?1:2),
-        MEM_GENDER: memInfo.gender
+        MEM_ZIPCODE: post.zipcode,
+        MEM_ADDR: post.addr,
+        MEM_ADDR_DTL: post.addrDetail,
+        MEM_STATUS: "0",
+        MEM_AUTH: (type==='member'?'member':'teacher'),
+        MEM_PW: memInfo.password,
+        MEM_TEL: memInfo.hp,
       }
       console.log(datas)
       const response = await memberInsertDB(datas);

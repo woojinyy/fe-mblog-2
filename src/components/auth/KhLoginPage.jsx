@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginEmail, loginGoogle } from '../../service/authLogic';
+import AuthLogic, { loginEmail, loginGoogle } from '../../service/authLogic';
 import { DividerDiv, DividerHr, DividerSpan, GoogleButton, LoginForm, MyH1, MyInput, MyLabel, MyP, PwEye, SubmitButton } from '../styles/FormStyle';
 
 const KhLoginPage = ({authLogic}) => {
@@ -75,6 +75,7 @@ const KhLoginPage = ({authLogic}) => {
         //현재 바라보는 URL - /login
         //문제제기 - sessionstorage 유지 되나요?
         navigate('/')//Route path ='/' Homepage
+        //window.location.reload()
     } catch (error) {
         console.log(error+"로그인 에러 입니다")
     }
@@ -83,13 +84,16 @@ const KhLoginPage = ({authLogic}) => {
   const loginG = async() => {
     // 구글 로그인 구현
     try {
-        const result= await loginGoogle(authLogic.getUserAuth(),authLogic)
+        const result= await loginGoogle(authLogic.getUserAuth()
+        ,authLogic.getGoogleAuthProvider())
         console.log(result.data)
-        //navigate('/')
-        //window.location.reload()
+        window.sessionStorage.setItem('userId', result.uid)
+        navigate('/')
+        window.location.reload()
     } catch (error) {
-        console.log('로그인오류입니다.')
+        console.log('로그인오류입니다.'+error)
     }
+
   }
   return (
     <>
@@ -117,9 +121,9 @@ const KhLoginPage = ({authLogic}) => {
         <GoogleButton type="button" onClick={()=>{loginG();}}>
           <i className= "fab fa-google-plus-g" style={{color: "red", fontSize: "18px"}}></i>&nbsp;&nbsp;Google 로그인
         </GoogleButton>
-        <MyP style={{marginTop:"30px"}}>신규 사용자이신가요?&nbsp;<Link to="/login/signup" className="text-decoration-none" style={{color: "blue"}}>계정 만들기</Link></MyP>
-        <MyP>이메일를 잊으셨나요?&nbsp;<Link to="/login/findEmail" className="text-decoration-none" style={{color: "blue"}}>이메일 찾기</Link></MyP>
-        <MyP>비밀번호를 잊으셨나요?&nbsp;<Link to="/login/resetPwd" className="text-decoration-none" style={{color: "blue"}}>비밀번호 변경</Link></MyP>
+        <MyP style={{marginTop:"30px"}}>신규 사용자이신가요?&nbsp;<Link to="/auth/signup" className="text-decoration-none" style={{color: "blue"}}>계정 만들기</Link></MyP>
+        <MyP>이메일를 잊으셨나요?&nbsp;<Link to="/auth/findEmail" className="text-decoration-none" style={{color: "blue"}}>이메일 찾기</Link></MyP>
+        <MyP>비밀번호를 잊으셨나요?&nbsp;<Link to="/auth/resetPwd" className="text-decoration-none" style={{color: "blue"}}>비밀번호 변경</Link></MyP>
       </LoginForm>
     </>
   );

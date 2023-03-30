@@ -8,6 +8,7 @@ import App from './App';
 import './components/css/style.css';
 import rootReducer from './redux/rootReducer';
 import '@fortawesome/fontawesome-free/js/all.js'
+import 'react-quill/dist/quill.snow.css'
 //이미지업로더 객체 생성
 import ImageUploader from "./service/imageUploader";
 import firebaseApp from './service/firebase';
@@ -19,7 +20,7 @@ const store = legacy_createStore(rootReducer);
 const authLogic = new AuthLogic(firebaseApp);
 //store에 있는 초기상태정보 출력하기
 store.dispatch(
-  setAuth(authLogic.getUserAuth(),authLogic.getGoogleAuthProcvider())
+  setAuth(authLogic.getUserAuth(),authLogic.getGoogleAuthProvider())
 )
 ////////////////////////////////////////
 //리덕스 추가 store생성
