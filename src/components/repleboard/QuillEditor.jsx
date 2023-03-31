@@ -1,11 +1,12 @@
 import React from 'react'
 import { useCallback, useEffect, useMemo } from 'react';
-import ReactQuill, { Quill } from 'react-quill'; 
+import ReactQuill from 'react-quill'; 
 import { uploadImageDB } from '../../service/dbLogic';
 
 
 const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
     console.log(files);
+    console.log(Array.isArray(files))
     //const dispatch = useDispatch();
     const imageHandler = useCallback(() => {
         console.log(files);
@@ -30,17 +31,19 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
             !fileType[fileType.length-1].toUpperCase().match('JPEG')) {
                 console.log("jpg png jpeg형식만 지원합니다.");
             }
+            //스프링 RequestParam value=image 타입과 맞춰야함 에러415확인 
             formData.append("image", file); // 위에서 만든 폼데이터에 이미지 추가
             for (let pair of formData.entries()) {
                 console.log(pair[0], pair[1]); 
             }
             // 폼데이터를 서버에 넘겨 multer로 이미지 URL 받아오기
             const res = await uploadImageDB(formData);
+            files.push(res.data)
             console.log(res.data);//return받는 파일명 XXXX.png
             if (!res.data) {
                 console.log("이미지 업로드에 실패하였습니다.");
             }
-            const url = process.env.REACT_APP_PUBLIC_URL+`board3/imageGet.st3?imageName=${files[0]}`;
+            const url = process.env.REACT_APP_SPRING_IP+`reple/imageGet?imageName=${res.data}`;
             const quill = quillRef.current.getEditor();
             /* ReactQuill 노드에 대한 Ref가 있어야 메서드들을 호출할 수 있으므로
             useRef()로 ReactQuill에 ref를 걸어주자.
@@ -68,9 +71,6 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
             
         }, [quillRef, files]);
         
-
-
-
     const modules = useMemo(
         () => ({
         toolbar: { // 툴바에 넣을 기능들을 순서대로 나열하면 된다.
@@ -118,5 +118,4 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
         </div>
     )
 }
-
 export default QuillEditor

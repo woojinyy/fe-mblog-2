@@ -7,8 +7,8 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 const HomePage = () => {
   const member = window.localStorage.getItem('member')
-  console.log(JSON.parse(member))
   const jsonDoc=JSON.parse(member)
+  console.log(JSON.parse(member))
   const navigate = useNavigate()
   const handleLogin=()=>{
     console.log('로그인요청')

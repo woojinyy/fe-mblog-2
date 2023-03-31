@@ -1,9 +1,11 @@
 import React from 'react'
 import { Button, Table } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 import BlogFooter from '../include/BlogFooter';
 import BlogHeader from '../include/BlogHeader';
 
 const RepleBoardPage = () => {
+  const navigate= useNavigate()
     const boardSearch=()=>{
 
     }
@@ -59,7 +61,7 @@ const RepleBoardPage = () => {
           <Button variant="warning" >
             전체조회
           </Button>&nbsp; 
-          <Button variant="success" >
+          <Button variant="success" onClick={()=>navigate("/reple/boardwrite")} >
             글쓰기
           </Button> 
         </div>

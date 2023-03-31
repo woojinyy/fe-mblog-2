@@ -21,14 +21,17 @@ import ResetPwdPage from './components/auth/ResetPwdPage';
 import RepleBoardDetail from './components/repleboard/RepleBoardDetail';
 import RepleBoardWriteForm from './components/repleboard/RepleBoardWriteForm';
 function App({authLogic,imageUploader}) {
-  const navigate=useNavigate()
+  //Hook 화면을 전환 시킬 때 vs window.location.href차이점 새로고침 요청 발생 가상의 돔 사용하지 않음
+  const navigate=useNavigate()//가상돔 사용
+  const dispatch = useDispatch()//onewaybinding 허브역할 action.type(switch문-선택),action.payload(내용) 인자를 넘겨야한다
   const ssg=sessionStorage;
-  const dispatch = useDispatch()
-  const toastStatus = useSelector(state=>state.toastStatus)
-  useEffect(()=>{
+  const toastStatus = useSelector(state=>state.toastStatus)//store에 값을 접근할 때
+  useEffect(()=>{//의존성 배열 존재 -의존성 배열에 있는 변수 또는 함수,훅이 변할 때 마다 다시 호출 가능하다
     //시그널보내
-    const asyncDB=async()=>{
+    console.log('effect')
+    const asyncDB=async()=>{//함수 선언 -memberListDB호출
     const auth=authLogic.getUserAuth()
+    console.log('asyncDB')
     //현재 인증된 사용자 정보를 가져온다
     const user = await onAuthChange(auth)
        //사용자 정보가 있으면 =userId가 있다
@@ -72,7 +75,7 @@ function App({authLogic,imageUploader}) {
         }
       }//end of else
     }
-    asyncDB()
+    asyncDB()//함수 호출
   },[dispatch])
   return (
     <>
