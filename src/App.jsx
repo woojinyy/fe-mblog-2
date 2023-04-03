@@ -20,6 +20,10 @@ import FindEmailPage from './components/auth/FindEmailPage';
 import ResetPwdPage from './components/auth/ResetPwdPage';
 import RepleBoardDetail from './components/repleboard/RepleBoardDetail';
 import RepleBoardWriteForm from './components/repleboard/RepleBoardWriteForm';
+import KhQnAListPage from './components/repleboard/KhQnAListPage';
+import KhQnAWriteForm from './components/repleboard/KhQnAWriteForm';
+import KhQnADetailPage from './components/repleboard/KhQnADetailPage';
+import KhQnAUpdatePage from './components/repleboard/KhQnAUpdatePage';
 function App({authLogic,imageUploader}) {
   //Hook 화면을 전환 시킬 때 vs window.location.href차이점 새로고침 요청 발생 가상의 돔 사용하지 않음
   const navigate=useNavigate()//가상돔 사용
@@ -100,6 +104,14 @@ function App({authLogic,imageUploader}) {
       <Route path = "/auth/kakao/callback" exact={true} element={<KakaoRedirectHandler/>}/>
       <Route path='/member' exact={true} element={<MemberPage imageUploader={imageUploader}/>}/>
       <Route path='/profile' exact={true} element={<Profile/>}/>
+      {/* qna게시판 */}
+      <Route path = "/qna/list" exact={true} element={<KhQnAListPage authLogic={authLogic}/>}/>
+
+      <Route path = "/qna/write" exact={true} element={<KhQnAWriteForm authLogic={authLogic}/>}/>
+
+      <Route path = "/qna/detail/*"  element={<KhQnADetailPage/>}/>
+
+      <Route path = "/qna/update/:bno"  element={<KhQnAUpdatePage/>}/>
     </Routes>
       
     </div>
