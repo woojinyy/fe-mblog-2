@@ -20,7 +20,8 @@ const KhQnAListPage = ({authLogic}) => {
   //url주소에 한글 있을 때  사용
   const search = decodeURIComponent(useLocation().search);
   //오라클 서버에서 받아오는 정보 담기
-  const [listBody,setListBody] = useState([]);
+  //{} -객체 리터럴 =자바 클래스
+  const [listBody,setListBody] = useState([]);//배열 타입 [{},{},{}] 자바: List<Map>, List<VO>
   //qna_type구분하는 상수값 라벨처리
   const[types]= useState(['전체','일반','결제','양도','회원','수업']);
   //qna_type 상태관리
@@ -31,7 +32,8 @@ const KhQnAListPage = ({authLogic}) => {
     setTTitle(element);
   },[]);//의존배열이 비었으르모 한 번만 메모이제이션 된 함수값을 계속 기억해둔다
 
-
+//useEffect VS 일반함수  일반함수로 정의하는 것과 useEffect에서 정의하는 것의 차이?
+//async고려대상 아니다 
   useEffect(() => {
     const qnaList = async() =>{
       //콤보박스 내용 -> 제목, 내용, 작성자 중 하나
@@ -64,18 +66,33 @@ const KhQnAListPage = ({authLogic}) => {
           mem_name:item.MEM_NAME,
           qna_date:item.QNA_DATE,
           qna_hit:item.QNA_HIT,
+          qna_secret:JSON.parse(item.QNA_SECRET),//문자열'false'가 boolean false가 된다
+          file:item.FILE_NAME,
+          comment:item.COMM_NO
         }
         list.push(obj)
       })
-      setListBody(list);
+      //데이터의 변화에 따라 리렌더링 할 것과 기존의 DOM을 그냥 출력하는 것을 구분 할 수 이따
+      setListBody(list);//listBody[1] 일반 변수로 선언하는 것과 Hook을 선언하는 것과의 차이점
     }
+    /*
+    return()=>{
+      alert('return호출');
+      console.log('화면렌더링-인터셉트 당하는 느낌')
+    }
+    */
     qnaList();
   },[setListBody, setTTitle,  page, search]);
 
   //listItemsElements 클릭이벤트 처리시 사용
   const getAuth = (listItem) => {
     console.log(listItem);
-
+    console.log(listItem.qna_secert);
+    if(listItem.qna_secert===false){
+      navigate(`/qna/detail?qna_bno=${listItem.qna_bno}`)
+    }else{
+      console.log('권한이 없습니다')
+    }
   }
 
 
@@ -90,7 +107,7 @@ const KhQnAListPage = ({authLogic}) => {
     :
     <th key={index} style={{width:HeaderWd[index],textAlign: 'center'}}>{listHeader}</th>
   )
-
+//listBody = n건 상태Hook
   const listItemsElements = listBody.map((listItem, index) => {
     console.log(listItem);
     return (

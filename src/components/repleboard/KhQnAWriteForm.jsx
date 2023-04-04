@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useCallback } from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
@@ -23,7 +23,6 @@ const KhQnAWriteForm = ({authLogic}) => {//props로 넘어온 값 즉시 구조�
   const[files, setFiles]= useState([]);//파일처리
   const quillRef = useRef();
 
-
   const handleContent = useCallback((value) => {
     console.log(value);
     setContent(value);
@@ -31,8 +30,8 @@ const KhQnAWriteForm = ({authLogic}) => {//props로 넘어온 값 즉시 구조�
 
 
   const handleFiles = useCallback((value) => {
-    setFiles([...files, value]);
-  },[files]);
+    setFiles([...files, value]);//깊은복사
+  },[files]);//[m.png, m1.png, m2.png]공백이 생긴다    파일이 추가 될 때마다 useCallback 호출
 
 
   const handleTitle = useCallback((e) => {
@@ -53,6 +52,7 @@ const KhQnAWriteForm = ({authLogic}) => {//props로 넘어온 값 즉시 구조�
       qna_secret:(secret ?'true':'false'),
       qna_type:tTitle,
       qna_no:sessionStorage.getItem('no'),
+      fileNmaes:files,
     
     }//사용자가 입력한 값 넘기기@RequestBody로 처리됨
     const res = await qnaInsertDB(board)

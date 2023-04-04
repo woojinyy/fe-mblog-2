@@ -21,6 +21,7 @@ return new Promise((reslove, reject) => {
 };
 
 export const qnaInsertDB = (board) => {
+  console.log(board)//fileNmaes가 존재하는 지 확인 ['man1.png','man2.png','man3.png']
   console.log("qnaInsertDB호출")
 return new Promise((reslove, reject) => {
   try {
