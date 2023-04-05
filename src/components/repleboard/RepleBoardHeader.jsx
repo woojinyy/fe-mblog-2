@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { BButton } from '../styles/FormStyle';
+import { qnaDeleteDB } from '../../service/dbLogic';
 
 const RepleBoardHeader = ({detail, bno}) => {
   console.log(detail);
@@ -8,9 +9,14 @@ const RepleBoardHeader = ({detail, bno}) => {
   const navigate = useNavigate();
   
   const boardDelete = async() => {
-    
+    const board={//키 : value
+      qna_bno:bno,//mybatisxml코드 #{qna_bno}
+    }
+    const res = await qnaDeleteDB(board)
+    navigate("/qna/list?page=1")
   }
   const qnaList = () => {
+    //파라미터로 받은 페이지 번호가 돌아갈 페이지 정보
     navigate('/qna/list')
   }
   return (

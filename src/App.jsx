@@ -88,7 +88,7 @@ function App({authLogic,imageUploader}) {
     
      <Routes>
       {/* 로그인 및 회원가입 */}
-      <Route path = "/" exact={true} element={<HomePage/>}/>
+      <Route path = "/" exact={true} element={<HomePage authLogic={authLogic}/>}/>
       <Route path = "/login" exact={true} element={<KhLoginPage authLogic={authLogic}/>}/>
       <Route path = "/auth/signup" exact={true} element={<SignupPage authLogic={authLogic}/>}/>
       <Route path = "/auth/emailVerified" exact={true} element={<EmailVerifiedPage authLogic={authLogic}/>}/>
@@ -109,9 +109,9 @@ function App({authLogic,imageUploader}) {
 
       <Route path = "/qna/write/*" exact={true} element={<KhQnAWriteForm authLogic={authLogic}/>}/>
 
-      <Route path = "/qna/detail/*"  element={<KhQnADetailPage/>}/>
+      <Route path = "/qna/detail/*"  element={<KhQnADetailPage authLogic={authLogic}/>}/>
 
-      <Route path = "/qna/update/:bno"  element={<KhQnAUpdatePage/>}/>
+      <Route path = "/qna/update/:bno"  element={<KhQnAUpdatePage authLogic={authLogic}/>}/>
     </Routes>
       
     </div>

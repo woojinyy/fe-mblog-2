@@ -9,7 +9,7 @@ import BlogFooter from '../include/BlogFooter';
 import BlogHeader from '../include/BlogHeader';
 import MyPagination from './MyPagination';
 import { BButton, ContainerDiv, FormDiv, HeaderDiv } from '../styles/FormStyle';
-import MyFilter from './MyFilter';
+import KhMyFilter from './KhMyFilter';
 import SearchBar from './KhSearchBar';
 
 const KhQnAListPage = ({authLogic}) => {
@@ -144,7 +144,7 @@ const KhQnAListPage = ({authLogic}) => {
         <FormDiv>
           <div>
             <div style={{display:"flex", justifyContent:"space-between", height:"40px"}}>
-              <MyFilter types={types} type={true} id={"qna_type"} title={tTitle} handleTitle={handleTTitle}/>
+              <KhMyFilter types={types} type={true} id={"qna_type"} title={tTitle} handleTitle={handleTTitle}/>
               {
                /*  sessionStorage.getItem('auth')==='teacher'&& */
                 <BButton style={{width:"80px", height:"38px"}} onClick={()=>{navigate(`/qna/write`)}}>글쓰기</BButton>

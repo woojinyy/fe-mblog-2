@@ -26,7 +26,7 @@ const Img = styled.img`
     object-fit:cover;
 `;
 
-const DeptDetail = ({imageUploader}) => {
+const DeptDetail = ({authLogic,imageUploader}) => {
     const validate = (key,e)=>{
         console.log('validate:'+key)
         let result;

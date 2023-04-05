@@ -9,7 +9,7 @@ import { qnaInsertDB } from '../../service/dbLogic';
 import BlogFooter from '../include/BlogFooter';
 import BlogHeader from '../include/BlogHeader';
 import { BButton, ContainerDiv, FormDiv, HeaderDiv } from '../styles/FormStyle';
-import MyFilter from './MyFilter';
+import KhMyFilter from './KhMyFilter';
 import QuillEditor from './QuillEditor';
 import RepleBoardFileInsert from './RepleBoardFileInsert';
 
@@ -51,7 +51,7 @@ const KhQnAWriteForm = ({authLogic}) => {//props로 넘어온 값 즉시 구조�
       qna_content:content,
       qna_secret:(secret ?'true':'false'),
       qna_type:tTitle,
-      qna_no:sessionStorage.getItem('no'),
+      mem_no:sessionStorage.getItem('no'),
       fileNmaes:files,
     
     }//사용자가 입력한 값 넘기기@RequestBody로 처리됨
@@ -80,7 +80,7 @@ const KhQnAWriteForm = ({authLogic}) => {//props로 넘어온 값 즉시 구조�
                   <Form.Check type="switch" id="custom-switch" style={{paddingLeft: '46px'}} 
                     onClick={()=>{setSecret(!secret)}}/>
                 </div>
-                <MyFilter title={tTitle} types={types} handleTitle={handleTTitle}></MyFilter>
+                <KhMyFilter title={tTitle} types={types} handleTitle={handleTTitle}></KhMyFilter>
                 <BButton style={{marginLeft:'10px'}}onClick={()=>{qnaInsert()}}>글쓰기</BButton>
               </div>
             </div>

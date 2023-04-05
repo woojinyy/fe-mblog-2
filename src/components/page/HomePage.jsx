@@ -5,7 +5,8 @@ import { ContainerDiv,HeaderDiv,FormDiv } from '../styles/FormStyle';
 import KakaoMap from '../kakao/KakaoMap';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
-const HomePage = () => {
+const HomePage = ({authLogic}) => {
+  const auth = authLogic.getUserAuth()
   const member = window.localStorage.getItem('member')
   const jsonDoc=JSON.parse(member)
   console.log(JSON.parse(member))
@@ -17,7 +18,7 @@ const HomePage = () => {
   return (
     <>
       <ContainerDiv>
-      <BlogHeader/>
+      <BlogHeader authLogic={authLogic}/>
       <HeaderDiv>
         <h1 style={{marginLeft:"10px"}}>터짐블로그</h1>
         <Button onClick={handleLogin}>로그인</Button>

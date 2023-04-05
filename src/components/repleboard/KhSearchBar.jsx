@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BButton } from '../styles/FormStyle';
-import MyFilter from './MyFilter';
+import KhMyFilter from './KhMyFilter';
 const KhSearchBar = () => {
   //사용자가 입력한 문자열 담기
   const[content, setContent]= useState('');
@@ -53,7 +53,7 @@ const KhSearchBar = () => {
 
   return (
     <div style={{display: 'flex', width: '100%', justifyContent: 'center'}}>
-      <MyFilter types={types} title={tTitle} id={"condition"} handleTitle={handleTTitle}/>
+      <KhMyFilter types={types} title={tTitle} id={"condition"} handleTitle={handleTTitle}/>
       <input type="text" value={content} style={{maxWidth: "600px", width: "40%", height:"40px",
         margin: "0px 10px 0px 10px", border:"1px solid lightgray", borderRadius:"10px"}}
         onChange={(e)=>{setContent(e.target.value);}}

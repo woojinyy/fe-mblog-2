@@ -2,6 +2,26 @@ import axios from "axios";
 //Q 대소문자 구분?
 //A 파라미터는 소문자 리턴값은 대문자 
 
+
+export const qnaDetailDB = (board) => {
+  console.log("qnaDetailDB호출")
+  console.log(board)//대소문자 확인 QNA_BNO, qna_bno const obj객체리터럴에서{ QNA_BNO:29}
+return new Promise((reslove, reject) => {
+  try {
+    const response = axios({
+      method: "get",
+      url: process.env.REACT_APP_SPRING_IP + "reple/qnaDetail",
+      params: board,//쿼리스트링 header에 담김 get방식
+    });
+    console.log(response)
+    reslove(response);
+  } catch (error) {
+    reject(error);
+  }
+});
+};
+
+
 export const qnaListDB = (board) => {
   console.log("qnaListDB호출")
 return new Promise((reslove, reject) => {

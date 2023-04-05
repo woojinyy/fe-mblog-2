@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import BlogFooter from '../include/BlogFooter';
 import BlogHeader from '../include/BlogHeader';
 
-const RepleBoardPage = () => {
+const RepleBoardPage = ({authLogic}) => {
   const navigate= useNavigate()
     const boardSearch=()=>{
 
