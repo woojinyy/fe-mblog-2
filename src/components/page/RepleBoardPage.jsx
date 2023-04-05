@@ -12,7 +12,7 @@ const RepleBoardPage = ({authLogic}) => {
 
   return (
     <>
-      <BlogHeader/>
+      <BlogHeader authLogic={authLogic}/>
         <div className='container'>
         <div className="page-header">
             <h2>댓글형게시판&nbsp;<i className='fa-solid fa-angles-right'></i>&nbsp;<small>글목록</small></h2>

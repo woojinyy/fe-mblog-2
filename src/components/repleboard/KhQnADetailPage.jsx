@@ -50,7 +50,7 @@ const KhQnADetailPage = ({authLogic}) => {
       console.log(jsonDoc[0].QNA_HIT);
       console.log(JSON.parse(jsonDoc[0].QNA_SECRET));
       if(JSON.parse(jsonDoc[0].QNA_SECRET)){//boolean false이면
-        if(sessionStorage.getItem('auth')!==''&&sessionStorage.getItem('no')!==JSON.stringify(jsonDoc[0].MEM_NO)) {
+        if(sessionStorage.getItem('auth')!=='3'&&sessionStorage.getItem('no')!==JSON.stringify(jsonDoc[0].MEM_NO)) {
           //navigate(`/qna/list?page=1`);
           //return dispatch(setToastMsg("권한이 없습니다.")); 
         }
